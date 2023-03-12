@@ -1,5 +1,5 @@
 import java.util.*;
-public class Hostelmanagement {
+public class Hostelmanagement {                                        
 
 
     void menu()
@@ -23,7 +23,51 @@ public class Hostelmanagement {
         int pass=sc.nextInt();
         if(id == 12113853 && pass==12345)
         {
-            ob1.menu();
+             ob1.menu();
+            System.out.println("Do you want to book Hostel \nPress 1 for confirmation");
+            int ch=sc.nextInt();
+            if(ch==1) {
+                System.out.println("Thank you for selecting the Hostel\n it is very safer fo your student :");
+                System.out.println("Please proceed on  next step:\n to proceed on next step Press 2:");
+                int ch1=sc.nextInt();
+                if(ch1==2)
+                {
+                    System.out.println("To book 1 seater with Ac Press 3:");
+                    System.out.println("To book 2 seater with Ac Press 4:");
+                    System.out.println("To book 4 seater with Ac Press 5:");
+                    System.out.println("To book 1 seater  Non Ac Press 6:");
+                    System.out.println("To book 2 seater  Non Ac Press 7:");
+                    System.out.println("To book 4 seater Non Ac Press 8:");
+                    System.out.println("To book Dormatory  Press 9:");
+                    System.out.println("For exit  Press 0:");
+
+                    System.out.println("Please press the button");
+                    int ch2=sc.nextInt();
+                    switch (ch2)
+                    {
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            break;
+                        case 7:
+                            break;
+                        case 8:
+                            break;
+                        case 9:
+                            break;
+                        case 0:
+                            break;
+
+                    }
+                }
+
+
+            }
+
         }
         else
             System.out.println("Invalid credentials");
