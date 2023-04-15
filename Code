@@ -1,77 +1,229 @@
-import java.util.*;
-public class Hostelmanagement {                                        
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
+class Hostel {
+    private Map<Integer, Student> students; // Map to store student information
+    private Map<String, String> messMenu; // Map to store mess menu
+    private String wardenName; // Warden's name
+    private String wardenContact; // Warden's contact information
+    private ArrayList<Integer> cleaningRequests; // List to store room cleaning requests
 
-    void menu()
-    {
-        System.out.println("Price for 1 seater with Ac is 100000");
-        System.out.println("Price for 2 seater with Ac is 90000");
-        System.out.println("Price for 4 seater with Ac is 80000");
-        System.out.println("Price for 1 seater Non Ac is 70000 ");
-        System.out.println("Price for 2 seater Non Ac is 60000");
-        System.out.println("Price for 4 seater Non Ac is 50000");
-        System.out.println("Price for Dormatory  is 40000");
-
+    public Hostel() {
+        students = new HashMap<>();
+        messMenu = new HashMap<>();
+        cleaningRequests = new ArrayList<>();
     }
-    public static void main(String[] args) {
-        Scanner sc=new Scanner(System.in);
-        Hostelmanagement ob1=new Hostelmanagement();
-        System.out.println("Enter your id and password");
-        System.out.println("Your id is :");
-        int id=sc.nextInt();
-        System.out.println("Your Pass is :");
-        int pass=sc.nextInt();
-        if(id == 12113853 && pass==12345)
-        {
-             ob1.menu();
-            System.out.println("Do you want to book Hostel \nPress 1 for confirmation");
-            int ch=sc.nextInt();
-            if(ch==1) {
-                System.out.println("Thank you for selecting the Hostel\n it is very safer fo your student :");
-                System.out.println("Please proceed on  next step:\n to proceed on next step Press 2:");
-                int ch1=sc.nextInt();
-                if(ch1==2)
-                {
-                    System.out.println("To book 1 seater with Ac Press 3:");
-                    System.out.println("To book 2 seater with Ac Press 4:");
-                    System.out.println("To book 4 seater with Ac Press 5:");
-                    System.out.println("To book 1 seater  Non Ac Press 6:");
-                    System.out.println("To book 2 seater  Non Ac Press 7:");
-                    System.out.println("To book 4 seater Non Ac Press 8:");
-                    System.out.println("To book Dormatory  Press 9:");
-                    System.out.println("For exit  Press 0:");
 
-                    System.out.println("Please press the button");
-                    int ch2=sc.nextInt();
-                    switch (ch2)
-                    {
-                        case 3:
-                            break;
-                        case 4:
-                            break;
-                        case 5:
-                            break;
-                        case 6:
-                            break;
-                        case 7:
-                            break;
-                        case 8:
-                            break;
-                        case 9:
-                            break;
-                        case 0:
-                            break;
-
-                    }
-                }
-
-
-            }
-
+    public void checkIn(int studentId, String studentName, int roomNumber) {
+        if (students.containsKey(studentId)) {
+            System.out.println("Student with ID " + studentId + " already checked-in!");
+        } else {
+            Student student = new Student(studentId, studentName, roomNumber);
+            students.put(studentId, student);
+            System.out.println("Check-in successful for student ID: " + studentId);
         }
-        else
-            System.out.println("Invalid credentials");
+    }
 
+    public void checkOut(int studentId) {
+        if (students.containsKey(studentId)) {
+            students.remove(studentId);
+            System.out.println("Check-out successful for student ID: " + studentId);
+        } else {
+            System.out.println("No student found with ID " + studentId);
+        }
+    }
 
+    public void applyLeave(int studentId, String leaveReason) {
+        if (students.containsKey(studentId)) {
+            students.get(studentId).applyLeave(leaveReason);
+        } else {
+            System.out.println("No student found with ID " + studentId);
+        }
+    }
+
+    public void requestCleaning(int roomNumber) {
+        if (!cleaningRequests.contains(roomNumber)) {
+            cleaningRequests.add(roomNumber);
+            System.out.println("Room cleaning request submitted for room number: " + roomNumber);
+        } else {
+            System.out.println("Cleaning request for room number " + roomNumber + " already exists!");
+        }
+    }
+
+    public void addMessMenu(String day, String menu) {
+        messMenu.put(day, menu);
+        System.out.println("Mess menu added for day: " + day);
+    }
+
+    public void setWardenInfo(String name, String contact) {
+        wardenName = name;
+        wardenContact = contact;
+        System.out.println("Warden information updated.");
+    }
+
+    public void displayStudentInfo(int studentId) {
+        if (students.containsKey(studentId)) {
+            Student student = students.get(studentId);
+            System.out.println("Student ID: " + student.getStudentId());
+            System.out.println("Name: " + student.getStudentName());
+            System.out.println("Room Number: " + student.getRoomNumber());
+            System.out.println("Leave Status: " + student.getLeaveStatus());
+        } else {
+            System.out.println("No student found with ID " + studentId);
+        }
+    }
+
+    public void displayMessMenu() {
+        System.out.println("Mess Menu:");
+        for (String day : messMenu.keySet()) {
+            System.out.println(day + ": " + messMenu.get(day));
+        }
+    }
+
+    public void displayCleaningRequests() {
+        if (cleaningRequests.isEmpty()) {
+            System.out.println("No cleaning requests found.");
+        } else {
+            System.out.println("Cleaning Requests:");
+            for (Integer roomNumber : cleaningRequests) {
+                System.out.println("Room Number: " + roomNumber);
+            }
+        }
+    }
+}
+
+//CODE FOR THE STUDENT CLASS:
+
+class Student {
+    private int studentId;
+    private String studentName;
+    private int roomNumber;
+    private String leaveStatus;
+
+    public Student(int studentId, String studentName, int roomNumber) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.roomNumber = roomNumber;
+        this.leaveStatus = "Present";
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public String getLeaveStatus() {
+        return leaveStatus;
+    }
+
+    public void applyLeave(String reason) {
+        this.leaveStatus = "On leave (" + reason + ")";
+    }
+}
+
+//CODE FOR THE MAIN CLASS:
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Hostel hostel = new Hostel();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nHostel Management System\n");
+            System.out.println("1. Check-in");
+            System.out.println("2. Check-out");
+            System.out.println("3. Apply leave");
+            System.out.println("4. Request room cleaning");
+            System.out.println("5. Add mess menu");
+            System.out.println("6. Set warden information");
+            System.out.println("7. Display student information");
+            System.out.println("8. Display mess menu");
+            System.out.println("9. Display cleaning requests");
+            System.out.println("10. Exit");
+
+            System.out.print("\nEnter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("\nEnter student ID: ");
+                    int studentId = scanner.nextInt();
+                    System.out.print("Enter student name: ");
+                    String studentName = scanner.next();
+                    System.out.print("Enter room number: ");
+                    int roomNumber = scanner.nextInt();
+                    hostel.checkIn(studentId, studentName, roomNumber);
+                    break;
+
+                case 2:
+                    System.out.print("\nEnter student ID: ");
+                    studentId = scanner.nextInt();
+                    hostel.checkOut(studentId);
+                    break;
+
+                case 3:
+                    System.out.print("\nEnter student ID: ");
+                    studentId = scanner.nextInt();
+                    System.out.print("Enter leave reason: ");
+                    String leaveReason = scanner.next();
+                    hostel.applyLeave(studentId, leaveReason);
+                    break;
+
+                case 4:
+                    System.out.print("\nEnter room number: ");
+                    roomNumber = scanner.nextInt();
+                    hostel.requestCleaning(roomNumber);
+                    break;
+
+                case 5:
+                    System.out.print("\nEnter day: ");
+                    String day = scanner.next();
+                    System.out.print("Enter menu: ");
+                    String menu = scanner.next();
+                    hostel.addMessMenu(day, menu);
+                    break;
+
+                case 6:
+                    System.out.print("\nEnter warden name: ");
+                    String wardenName = scanner.next();
+                    System.out.print("Enter warden contact: ");
+                    String wardenContact = scanner.next();
+                    hostel.setWardenInfo(wardenName, wardenContact);
+                    break;
+
+                case 7:
+                    System.out.print("\nEnter student ID: ");
+                    studentId = scanner.nextInt();
+                    hostel.displayStudentInfo(studentId);
+                    break;
+
+                case 8:
+                    hostel.displayMessMenu();
+                    break;
+
+                case 9:
+                    hostel.displayCleaningRequests();
+                    break;
+
+                case 10:
+                    System.out.println("\nThank you for using Hostel Management System.");
+                    return;
+
+                default:
+                    System.out.println("\nInvalid choice. Please try again.");
+                    break;
+            }
+        }
     }
 }
