@@ -1,14 +1,104 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
+public class Main {
+    public static void main(String[] args) {
+        Hostel hostel = new Hostel();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nHostel Management System\n");
+            System.out.println("1. Check in\n" + "2. Check-out\n" + "3. Apply Leave\n" + "4. Request room cleaning\n" + "5. Add mess menu\n" + "6. Set warden information\n" + "7. Display student information\n" + "8. Display mess menu\n" + "9. Display cleaning requests\n" + "10. Display warden information\n" + "11. Exit\n");
+
+            System.out.print("\nEnter your choice: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("\nEnter student ID: ");
+                    int studentId = scanner.nextInt();
+                    System.out.print("Enter student name: ");
+                    String studentName = scanner.next();
+                    System.out.print("Enter room number: ");
+                    int roomNumber = scanner.nextInt();
+                    hostel.checkIn(studentId, studentName, roomNumber);
+                    break;
+
+                case 2:
+                    System.out.print("\nEnter student ID: ");
+                    studentId = scanner.nextInt();
+                    hostel.checkOut(studentId);
+                    break;
+
+                case 3:
+                    System.out.print("\nEnter student ID: ");
+                    studentId = scanner.nextInt();
+                    System.out.print("Enter leave reason: ");
+                    String leaveReason = scanner.next();
+                    hostel.applyLeave(studentId, leaveReason);
+                    break;
+
+                case 4:
+                    System.out.print("\nEnter room number: ");
+                    roomNumber = scanner.nextInt();
+                    hostel.requestCleaning(roomNumber);
+                    break;
+
+                case 5:
+                    String menu = null;
+                    String day = null;
+                    System.out.print("\nEnter day: ");
+                    day = scanner.next();
+                    System.out.print("Enter menu: ");
+                    scanner.nextLine();
+                    menu = scanner.nextLine();
+                    hostel.addMessMenu(day, menu);
+                    break;
+
+                case 6:
+                    System.out.print("\nEnter warden name: ");
+                    String wardenName = scanner.next();
+                    System.out.print("Enter warden contact: ");
+                    String wardenContact = scanner.next();
+                    hostel.setWardenInfo(wardenName, wardenContact);
+                    break;
+
+                case 7:
+                    System.out.print("\nEnter student ID: ");
+                    studentId = scanner.nextInt();
+                    hostel.displayStudentInfo(studentId);
+                    break;
+
+                case 8:
+                    hostel.displayMessMenu();
+                    break;
+
+                case 9:
+                    hostel.displayCleaningRequests();
+                    break;
+
+                case 10:
+                    hostel.displayWardenInfo();
+                    break;
+
+                case 11:
+                    System.out.println("\nThank you for using Hostel Management System.");
+                    return;
+
+                default:
+                    System.out.println("\nInvalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+}
+// For warden
+import java.util.*;
 class Hostel {
-    private Map<Integer, Student> students; // Map to store student information
-    private Map<String, String> messMenu; // Map to store mess menu
-    private String wardenName; // Warden's name
-    private String wardenContact; // Warden's contact information
-    private ArrayList<Integer> cleaningRequests; // List to store room cleaning requests
+    Map<Integer, Student> students; // Map to store student information
+    Map<String, String> messMenu; // Map to store mess menu
+    String wardenName; // Warden's name
+    String wardenContact; // Warden's contact information
+    ArrayList<Integer> cleaningRequests; // List to store room cleaning requests
 
     public Hostel() {
         students = new HashMap<>();
@@ -92,15 +182,20 @@ class Hostel {
             }
         }
     }
+    public void displayWardenInfo() {
+        System.out.println("Warden Name: " + wardenName);
+        System.out.println("Warden Contact: " + wardenContact);
+    }
+
 }
 
-//CODE FOR THE STUDENT CLASS:
+/Student class
 
 class Student {
-    private int studentId;
-    private String studentName;
-    private int roomNumber;
-    private String leaveStatus;
+    int studentId;
+    String studentName;
+    int roomNumber;
+    String leaveStatus;
 
     public Student(int studentId, String studentName, int roomNumber) {
         this.studentId = studentId;
@@ -127,103 +222,5 @@ class Student {
 
     public void applyLeave(String reason) {
         this.leaveStatus = "On leave (" + reason + ")";
-    }
-}
-
-//CODE FOR THE MAIN CLASS:
-
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Hostel hostel = new Hostel();
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("\nHostel Management System\n");
-            System.out.println("1. Check-in");
-            System.out.println("2. Check-out");
-            System.out.println("3. Apply leave");
-            System.out.println("4. Request room cleaning");
-            System.out.println("5. Add mess menu");
-            System.out.println("6. Set warden information");
-            System.out.println("7. Display student information");
-            System.out.println("8. Display mess menu");
-            System.out.println("9. Display cleaning requests");
-            System.out.println("10. Exit");
-
-            System.out.print("\nEnter your choice: ");
-            int choice = scanner.nextInt();
-
-            switch (choice) {
-                case 1:
-                    System.out.print("\nEnter student ID: ");
-                    int studentId = scanner.nextInt();
-                    System.out.print("Enter student name: ");
-                    String studentName = scanner.next();
-                    System.out.print("Enter room number: ");
-                    int roomNumber = scanner.nextInt();
-                    hostel.checkIn(studentId, studentName, roomNumber);
-                    break;
-
-                case 2:
-                    System.out.print("\nEnter student ID: ");
-                    studentId = scanner.nextInt();
-                    hostel.checkOut(studentId);
-                    break;
-
-                case 3:
-                    System.out.print("\nEnter student ID: ");
-                    studentId = scanner.nextInt();
-                    System.out.print("Enter leave reason: ");
-                    String leaveReason = scanner.next();
-                    hostel.applyLeave(studentId, leaveReason);
-                    break;
-
-                case 4:
-                    System.out.print("\nEnter room number: ");
-                    roomNumber = scanner.nextInt();
-                    hostel.requestCleaning(roomNumber);
-                    break;
-
-                case 5:
-                    System.out.print("\nEnter day: ");
-                    String day = scanner.next();
-                    System.out.print("Enter menu: ");
-                    String menu = scanner.next();
-                    hostel.addMessMenu(day, menu);
-                    break;
-
-                case 6:
-                    System.out.print("\nEnter warden name: ");
-                    String wardenName = scanner.next();
-                    System.out.print("Enter warden contact: ");
-                    String wardenContact = scanner.next();
-                    hostel.setWardenInfo(wardenName, wardenContact);
-                    break;
-
-                case 7:
-                    System.out.print("\nEnter student ID: ");
-                    studentId = scanner.nextInt();
-                    hostel.displayStudentInfo(studentId);
-                    break;
-
-                case 8:
-                    hostel.displayMessMenu();
-                    break;
-
-                case 9:
-                    hostel.displayCleaningRequests();
-                    break;
-
-                case 10:
-                    System.out.println("\nThank you for using Hostel Management System.");
-                    return;
-
-                default:
-                    System.out.println("\nInvalid choice. Please try again.");
-                    break;
-            }
-        }
     }
 }
